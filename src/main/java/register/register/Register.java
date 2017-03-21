@@ -28,6 +28,7 @@ public class Register {
 		return total;
 	}
 	
+	// This method attempts to make change with the bills that are in the register
 	public TreeMap<Integer, Integer> makeChange(Integer amountOwed) throws Exception {
 		TreeMap<Integer, Integer> change = new TreeMap<Integer, Integer>();
 		
@@ -79,6 +80,8 @@ public class Register {
 		return change;
 	}
 	
+	// This method makes a complete transaction. It adds the bills that the
+	// customer paid with to the register, then attempts to make change.
 	public TreeMap<Integer, Integer> makeTransaction(Integer cost, TreeMap<Integer, Integer> paid) throws Exception {
 		// Find out how much customer paid
 		Integer sum = 0;
@@ -105,10 +108,13 @@ public class Register {
 		return new TreeMap<Integer, Integer>();
 	}
 	
+	// Overrides the toString method so that the contents of the 
+	// register can be displayed in a readable, text format
 	public String toString() {
-		return "Bills in the register: \n twenties: " + bills.get(20) + "\n tens: " + 
-				bills.get(10) + "\n fives: " + bills.get(5) + "\n twos: "
-				+ bills.get(2) + "\n singles: " + bills.get(1);
+		return "Register Contents: \n  Twenties: " + bills.get(20) + "\n  Tens: " + 
+				bills.get(10) + "\n  Fives: " + bills.get(5) + "\n  Twos: "
+				+ bills.get(2) + "\n  Ones: " + bills.get(1) + "\n  Total in Register: $" +
+				getTotal() + "\n";
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -120,7 +126,6 @@ public class Register {
 		cash.put(1, 10);
 		
 		Register cr = new Register(cash);
-		System.out.println(cr.getTotal());
 		System.out.println(cr);
 		
 		cr.removeMoney(20, 1);
@@ -128,15 +133,12 @@ public class Register {
 		cr.removeMoney(5, 3);
 		cr.removeMoney(1, 10);
 		
-		System.out.println(cr.getTotal());
 		System.out.println(cr);
 		
 		
 		cr.makeChange(11);
-		System.out.println(cr.getTotal());
 		System.out.println(cr);
 		
 		cr.makeChange(14);
-		Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
 	}
 }
