@@ -110,8 +110,6 @@ public class Register {
 				bills.get(10) + "\n fives: " + bills.get(5) + "\n twos: "
 				+ bills.get(2) + "\n singles: " + bills.get(1);
 	}
-	
-
 
 	public static void main(String[] args) throws Exception {
 		Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
@@ -121,11 +119,6 @@ public class Register {
 		cash.put(2, 4);
 		cash.put(1, 10);
 		
-//		cash.put(20, 1);
-//		cash.put(10, 1);
-//		cash.put(5, 1);
-//		cash.put(2, 4);
-//		cash.put(1, 0);
 		Register cr = new Register(cash);
 		System.out.println(cr.getTotal());
 		System.out.println(cr);
@@ -140,21 +133,10 @@ public class Register {
 		
 		
 		cr.makeChange(11);
-//		cr.makeChange(12);
 		System.out.println(cr.getTotal());
 		System.out.println(cr);
 		
-		
 		cr.makeChange(14);
-		
-		
-//		TreeMap<Integer, Integer> customerPaid = new TreeMap<Integer, Integer>();
-//		customerPaid.put(5, 1);
-//		
-//		System.out.println(cr.makeTransaction(1, customerPaid));
-//		
-//		System.out.println(cr.bills);
-
+		Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
 	}
-
 }

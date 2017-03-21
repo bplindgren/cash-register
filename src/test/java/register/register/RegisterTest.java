@@ -17,6 +17,9 @@ public class RegisterTest extends TestCase {
 	    super();
 	}
 	
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+	
 	@Test
 	public void testTotal() throws Exception {
 		Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
@@ -25,8 +28,8 @@ public class RegisterTest extends TestCase {
 		cash.put(5, 6);
 		cash.put(2, 4);
 		cash.put(1, 10);
-		
 		cr = new Register(cash);
+		
 		Integer total = 128;
 		assertEquals(cr.getTotal(), total);
 	}
@@ -39,7 +42,6 @@ public class RegisterTest extends TestCase {
 		cash.put(5, 6);
 		cash.put(2, 4);
 		cash.put(1, 10);
-		
 		cr = new Register(cash);
 		
 		cr.removeMoney(20, 1);
@@ -59,30 +61,27 @@ public class RegisterTest extends TestCase {
 		cash.put(5, 3);
 		cash.put(2, 4);
 		cash.put(1, 0);
+		cr = new Register(cash);
 		
 		Map<Integer, Integer> change = new TreeMap<Integer, Integer>();
 		change.put(5, 1);
 		change.put(2, 3);
 		
-		cr = new Register(cash);
 		assertEquals(cr.makeChange(11), change);
     }
     
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-    
     @Test
-    public void testShouldThrow() throws Exception {
+    public void testShouldThrowCantMakeChange() throws Exception {
     	Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
 		cash.put(20, 1);
 		cash.put(10, 0);
 		cash.put(5, 2);
 		cash.put(2, 1);
 		cash.put(1, 0);
+		cr = new Register(cash);
 		
 		Map<Integer, Integer> change = new TreeMap<Integer, Integer>();
 		
-		cr = new Register(cash);
 		try {
 			cr.makeChange(14);
 			fail("Should throw exception");
@@ -91,5 +90,43 @@ public class RegisterTest extends TestCase {
 		}
     }
  
+    @Test
+    public void testShouldThrowCustomerTheyDidntPayEnough() {
+    	Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
+		cash.put(20, 1);
+		cash.put(10, 0);
+		cash.put(5, 2);
+		cash.put(2, 1);
+		cash.put(1, 0);
+		cr = new Register(cash);
+		
+    	TreeMap<Integer, Integer> paid = new TreeMap<Integer, Integer>();
+    	paid.put(20, 1);
+		paid.put(10, 1);
+		
+		try {
+			cr.makeTransaction(40, paid);
+			fail("Should throw exception");
+		} catch (Exception e) {
+			assertTrue(e.getClass().equals(Exception.class)); 
+		}
+    }
+    
+    @Test
+    public void testShouldReturnEmptyTreeMapWhenCustomerPaysWithExactChange() throws Exception {
+    	Map<Integer, Integer> cash = new TreeMap<Integer, Integer>();
+    	cash.put(20, 1);
+		cash.put(10, 0);
+		cash.put(5, 2);
+		cash.put(2, 1);
+		cash.put(1, 0);
+		cr = new Register(cash);
+		
+    	TreeMap<Integer, Integer> paid = new TreeMap<Integer, Integer>();
+    	paid.put(20, 1);
+		paid.put(10, 1);
+		
+		assertTrue(cr.makeTransaction(30, paid).isEmpty());
+    }
 }
 
